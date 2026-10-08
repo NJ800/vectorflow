@@ -1,0 +1,28 @@
+# Core data / DB
+psycopg2-binary==2.9.9
+pandas==2.2.2
+python-dotenv==1.0.1
+sqlalchemy==2.0.30
+pgvector==0.2.5
+
+# Kafka event flow
+kafka-python==2.0.2
+
+# Embeddings
+google-genai==2.22.0
+
+# API server
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+
+# Caching
+redis==5.0.8
+
+# Ranking model (recommend.py stage 2)
+xgboost
+scikit-learn
+
+# Auth (Part 3: accounts, roles, sessions)
+PyJWT
+bcrypt
+pydantic[email]

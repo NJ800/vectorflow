@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   VectorFlow design tokens -- bright, professional, LinkedIn/Naukri-register
+   light theme. Solid brand colour does the structural work (top bar, primary
+   actions, active nav); everything else is near-white surfaces on a soft
+   off-white ground, divided by hairline borders, never shadows.
+
+   Two tokens beyond the given palette, added narrowly and for the same
+   reason `accent`/`success` exist: `danger` (errors, delete confirmations,
+   failed requests -- the given palette had no colour for this at all, and
+   the app has real error/delete states that can't just go colourless) and
+   `surface-hover` (the resting-state tint for a hovered table row, since
+   "no glow" still needs *some* visible hover feedback on a white row).
+   Both follow the same rule as accent/success: functional signal, never
+   decorative.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-bg: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-surface-hover: #eef1f4;
+
+  --color-ink: #1a2332;
+  --color-muted: #5b6472;
+
+  --color-border: #e2e5ea;
+
+  --color-brand: #1b4d6b;
+  --color-brand-hover: #143b54;
+
+  --color-accent: #c9781f;
+  /* The given accent only measures 3.2-3.4:1 against these light surfaces --
+     fine for a non-text indicator (a dot, a border) under WCAG's 3:1
+     non-text threshold, but short of the 4.5:1 normal text requires. Used
+     only where accent renders as actual readable text (an event-type
+     label, a "written Xs ago" readout), never for dots/borders/backgrounds,
+     which keep the true accent above. Same hue, darkened until it clears
+     AA (~4.7-5.0:1). */
+  --color-accent-text: #a16019;
+  --color-success: #1f7a4d;
+  --color-danger: #b3432f;
+}
+
+/* `inline` matters here: next/font defines --font-fraunces / --font-inter on a
+   class on <body>, so the utility has to reference them at the element rather
+   than resolve them once at :root (where they do not exist). */
+@theme inline {
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  /* `transition-colors` includes outline-color in Tailwind v4, which makes
+     the ring fade in from the element's text colour; dropping it from the
+     transition list keeps the ring instant without losing the hover fades. */
+  transition-property: color, background-color, border-color;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: var(--color-surface);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+/* The live-status dot. Slow enough to read as a heartbeat, not a blink. */
+@keyframes vf-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.vf-live-dot {
+  animation: vf-pulse 2.4s ease-in-out infinite;
+}
+
+/* Acknowledgement for a feed row that was not in the previous poll: an
+   accent edge and a wash that decay to nothing. Deliberately one-shot --
+   the feed should register as alive without behaving like a chat app. */
+@keyframes vf-arrive {
+  from {
+    background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    box-shadow: inset 2px 0 0 0 var(--color-accent);
+  }
+  to {
+    background-color: transparent;
+    box-shadow: inset 2px 0 0 0 transparent;
+  }
+}
+
+.vf-arrive {
+  animation: vf-arrive 1.8s ease-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

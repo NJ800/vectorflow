@@ -1,0 +1,25 @@
+# secrets
+.env
+.env.local
+.env.*.local
+
+# backend
+backend/venv/
+backend/data/
+backend/scripts/__pycache__/
+**/__pycache__/
+*.pyc
+
+# frontend
+frontend/node_modules/
+frontend/.next/
+frontend/tsconfig.tsbuildinfo
+
+# large db dumps
+vectorflow_dump.sql
+vectorflow_dump.sql.gz
+hf-deploy/vectorflow_dump.sql.gz
+
+# os
+.DS_Store
+Thumbs.db
